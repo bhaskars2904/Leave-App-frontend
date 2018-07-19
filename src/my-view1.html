@@ -1,0 +1,174 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-column.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../src/my-modal.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      #grid {
+      	height: 500px;
+      }
+      .leavebtn{
+      	bottom: 20px;
+        left: 400px;
+        position: absolute;
+        height: 40px;
+        font-size: 18px;
+      }
+      .leavebtn:hover {
+      	background-color: #3D8AC6;
+      },
+      #applyModal{
+      	width: 450px;
+      }
+    </style>
+
+    <div>
+	<!-- <vaadin-grid id="grid" items="[[data]]" size="200" active-item="{{activeItem}}">
+	    <vaadin-grid-column width="50px" >
+	      <template class="header">#</template>
+	      <template>[[index]]</template>
+	    </vaadin-grid-column>
+
+	    <vaadin-grid-column width="70px">
+	      <template class="header">Start Date</template>
+	      <template>[[item.name.first]]</template>
+	    </vaadin-grid-column>
+
+	    <vaadin-grid-column width="70px" >
+	      <template class="header">End Date</template>
+	      <template>[[item.name.first]]</template>
+	    </vaadin-grid-column>
+
+	    <vaadin-grid-column width="80px">
+	      <template class="header">Manager</template>
+	      <template>[[item.name.last]]</template>
+	    </vaadin-grid-column>
+
+	    <vaadin-grid-column width="50px">
+	      <template class="header">Status</template>
+	      <template>[[item.name.last]]</template>
+	    </vaadin-grid-column>
+
+	    <vaadin-grid-column width="calc(50%-350px)" >
+	      <template class="header">Desc</template>
+	      <template>[[item.name.desc]]</template>
+	    </vaadin-grid-column>
+
+	</vaadin-grid> -->
+	<div id="grid">
+		<px-data-grid
+			table-data="[[data]]"
+			columns='[{"name":"Start Date","path":"name.first","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"first[string]"},{"name":"End Date","path":"name.last","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"},{"name":"Approver","path":"name.first","frozen":false,"id":"email[string]"},{"name":"Status","path":"name.status","frozen":false,"id":"email[string]"}, {"name":"Description","path":"name.desc","frozen":false,"id":"email[string]"}]'
+			resizable
+			flex-to-size="true"
+			column-reordering-allowed
+			selection-mode="single"
+			hide-action-menu
+			hide-selection-column
+			table-actions='[{"name":"Export CSV","id":"CSV"}]'
+			item-actions='[]'
+			highlight='[]'>
+		</px-data-grid>
+	</div>
+	 <paper-button raised class="leavebtn" on-click="openModel">Apply Leave</paper-button>
+	 <vaadin-dialog opened="{{opened}}" id="applyModal">
+	  <template>
+	    <my-modal opened="{{opened}}"></my-modal>
+	  </template>
+	 </vaadin-dialog>
+    </div>
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { return 'my-view1'; }
+      static get properties(){
+      	return {
+      		data: {
+      			type: Array,
+      			value: [
+				          {"name": {
+				            "title": "miss",
+				            "first": "donna",
+				            "last": "davis",
+				            "desc": "chchygchgchgchmgchmgchgcnhghc hgchgchgchgcmhgcmhgchgch mgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
+				            "status": "Pending"
+				          }},
+				          {"name": {
+				            "title": "mr",
+				            "first": "samuel",
+				            "last": "kelley",
+				            "desc": "chchygchgchgchmgchmgch gcnhghchgchgchgchgcmhgcmhgchgchmg  chmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
+				            "status": "Pending"
+				          }},
+				          {"name": {
+				            "title": "ms",
+				            "first": "katie",
+				            "last": "butler",
+				            "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
+				            "status": "Pending"
+				          }},
+				          {"name": {
+				            "title": "ms",
+				            "first": "katie",
+				            "last": "butler",
+				            "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
+				            "status": "Pending"
+				          }},
+				          {"name": {
+				            "title": "ms",
+				            "first": "katie",
+				            "last": "butler",
+				            "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
+				            "status": "Pending"
+				          }}
+		        ]
+      		},
+      		activeItem: {
+            	observer: '_activeItemChanged'
+          	}
+      	}
+      }
+      constructor(){
+      	super();
+      	this.opened = false ; 
+      }
+
+      openModel(e){
+      	this.opened = ! this.opened ; 
+      }
+
+      _activeItemChanged(item) {
+          this.$.grid.selectedItems = item ? [item] : [];
+          console.log(item);
+		}
+
+		closeDialog(){
+			this.opened = ! this.opened ;
+		}
+
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>

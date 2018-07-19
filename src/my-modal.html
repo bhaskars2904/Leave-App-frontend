@@ -1,0 +1,142 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<!-- <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-column.html">
+<link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-selection-column.html"> -->
+<link rel="import" href="../bower_components/px-data-grid/px-data-grid.html">
+
+<dom-module id="my-modal">
+	<template>
+		<style>
+			:host{
+				height: 100px;
+				width: 300px;
+			}
+			.submit{
+		      	left:40%;
+		      	top: 99%;
+		        height: 40px;
+		        font-size: 18px;
+		    }
+		    .submit:hover {
+		      	background-color: #3D8AC6;
+		    }
+		    #managerSelect{
+		    	height: 100px;
+		    	width: 400px;	
+		    }
+		</style>
+		<div style="display: inline-block">
+			<paper-input id="startDate" label="Start Date" type="date" value="{{startDate}}" error-message="The end date is before the start date"></paper-input>
+			<paper-input id="endDate" label="End Date" type="date" value="{{endDate}}"></paper-input>
+			<paper-textarea id="leaveDesc" label="Leave Description" value="{{leaveDesc}}"></paper-textarea>
+		    <div id="managerSelect">
+			    <px-data-grid
+					table-data="[[data]]"
+					columns='[{"name":"First Name","path":"first","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"first[string]"},{"name":"LastName","path":"last","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"}]'
+					selection-mode="multi"
+					hide-action-menu
+					flex-to-size
+					selected-items="{{selected}}">
+				</px-data-grid>
+			</div>
+			<paper-button disabled="{{submitDisabled}}" raised class="submit" on-click="submit">Submit</paper-button>
+		</div>	
+	</template>
+	<script>
+		class MyModal extends Polymer.Element{
+			static get is(){return 'my-modal';}
+			static get properties() {
+			    return {
+			      startDate: Date,
+			      endDate: Date,
+			      data: {
+		      			type: Array,
+						value: [{
+						    "first": "Elizabeth",
+						    "last": "Wong",
+						    "full": "Elizabeth Wong",
+						    "email": "sika@iknulber.cl",
+						    "born": "1985-04-12",
+						    "age": 32,
+						    "appointment": "2009-05-05 01:10"
+						},{
+						    "first": "Elizabeth",
+						    "last": "Wong",
+						    "full": "Elizabeth Wong",
+						    "email": "sika@iknulber.cl",
+						    "born": "1985-04-12",
+						    "age": 32,
+						    "appointment": "2009-05-05 01:10"
+						}]
+		      		},
+		      		submitDisabled:{
+		      			type: Boolean,
+		      			value: true
+		      		},
+          			selected:{
+          				type: Array
+          			},
+          			opened:{
+          				type: Boolean,
+          				notify: true
+          			}
+			      }
+			    }
+		    static get observers(){
+		    	return [
+		    		// '_dateChange(startDate, endDate)',
+		    		// '_selectItemChanged(selected.*)',
+		    		'_toSubmit(startDate, endDate, selected.*)'
+		    	]
+		    }
+
+		    // _selectItemChanged(item){
+		    // 	if (item.base.length < 0) {
+		    // 		this.submitDisabled = true ;
+		    // 	}
+
+		    // }
+
+		   
+
+		    // _dateChange(startDate, endDate){
+		    // 	if (startDate === "") {return};
+		    // 	if (endDate === "") {return};
+		    // 	if(startDate >	 endDate){
+		    // 		this.$.startDate.invalid = true;
+		    // 		this.submitDisabled = true ; 
+		    // 	}else{
+		    // 		this.$.startDate.invalid = false;
+		    // 		this.submitDisabled = false ; 
+		    // 	}
+		    // }
+
+		    _toSubmit(startDate, endDate, item){
+		    	if (startDate === ""){return}
+	    		if (endDate === ""){return}
+    			if (item.base.length<0){return}
+		    	if(startDate > endDate){
+		    		this.$.startDate.invalid = true;
+		    		this.submitDisabled = true ;
+		    	}else{
+		    		if(item.base.length<=0){
+		    			this.submitDisabled = true ;
+		    			this.$.startDate.invalid = false;	
+		    		}else{
+		    			console.log(item.base);
+			    		this.$.startDate.invalid = false;
+			    		this.submitDisabled = false ;
+		    		}
+		    	}
+		    }
+		    submit(e){
+		        this.opened = !this.opened;
+		    }
+		}
+	window.customElements.define(MyModal.is, MyModal);
+	</script>>
+</dom-module>
