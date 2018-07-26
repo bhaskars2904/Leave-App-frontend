@@ -13,7 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-column.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
-<link rel="import" href="../src/my-modal.html">
+<link rel="import" href="my-modal.html">
+<link rel="import" href="leave-imports.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
@@ -77,8 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	</vaadin-grid> -->
 	<div id="grid">
 		<px-data-grid
-			table-data="[[data]]"
-			columns='[{"name":"Start Date","path":"name.first","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"first[string]"},{"name":"End Date","path":"name.last","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"},{"name":"Approver","path":"name.first","frozen":false,"id":"email[string]"},{"name":"Status","path":"name.status","frozen":false,"id":"email[string]"}, {"name":"Description","path":"name.desc","frozen":false,"id":"email[string]"}]'
+			table-data="[[leaves]]"
 			resizable
 			flex-to-size="true"
 			column-reordering-allowed
@@ -104,10 +104,103 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       static get is() { return 'my-view1'; }
       static get properties(){
       	return {
+      		leaves: {
+      			type: Array,
+      			value: []
+      		},
       		data: {
       			type: Array,
-      			value: [
-				          {"name": {
+      			value: []
+      		},
+      		activeItem: {
+            	observer: '_activeItemChanged'
+          	}
+      	}
+      }
+      constructor(){
+      	super();
+      	this.opened = false;
+      	this.data = [
+					{
+				        "leaveId": 2,
+				        "startDate": "2018-07-27T18:30:00.000+0000",
+				        "endDate": "2018-07-28T18:30:00.000+0000",
+				        "descr": "xyz",
+				        "approverDetailList": [
+				            {
+				                "approverId": 3,
+				                "employeeDetail": {
+				                    "fname": "bhaskar",
+				                    "lname": "sharma",
+				                    "mail": "3"
+				                },
+				                "status": "Pending"
+				            },
+				            {
+				                "approverId": 4,
+				                "employeeDetail": {
+				                    "fname": "s",
+				                    "lname": "s",
+				                    "mail": "4"
+				                },
+				                "status": "Pending"
+				            }
+				        ]
+				    },
+				    {
+				        "leaveId": 3,
+				        "startDate": "2018-07-31T18:30:00.000+0000",
+				        "endDate": "2018-08-02T18:30:00.000+0000",
+				        "descr": "sick",
+				        "approverDetailList": [
+				            {
+				                "approverId": 3,
+				                "employeeDetail": {
+				                    "fname": "a",
+				                    "lname": "a",
+				                    "mail": "3"
+				                },
+				                "status": "Pending"
+				            },
+				            {
+				                "approverId": 4,
+				                "employeeDetail": {
+				                    "fname": "s",
+				                    "lname": "s",
+				                    "mail": "4"
+				                },
+				                "status": "Pending"
+							            }
+				        ]
+				    }
+		        ];
+
+		this.leaves = LeaveService.getLeavesForTable(this.data);
+      }
+
+      openModel(e){
+      	this.opened = ! this.opened ; 
+      }
+
+      _activeItemChanged(item) {
+          this.$.grid.selectedItems = item ? [item] : [];
+          console.log(item);
+		}
+
+		closeDialog(){
+			this.opened = ! this.opened ;
+		}
+
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>
+
+
+
+
+<!-- {"name": {
 				            "title": "miss",
 				            "first": "donna",
 				            "last": "davis",
@@ -141,34 +234,4 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				            "last": "butler",
 				            "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh",
 				            "status": "Pending"
-				          }}
-		        ]
-      		},
-      		activeItem: {
-            	observer: '_activeItemChanged'
-          	}
-      	}
-      }
-      constructor(){
-      	super();
-      	this.opened = false ; 
-      }
-
-      openModel(e){
-      	this.opened = ! this.opened ; 
-      }
-
-      _activeItemChanged(item) {
-          this.$.grid.selectedItems = item ? [item] : [];
-          console.log(item);
-		}
-
-		closeDialog(){
-			this.opened = ! this.opened ;
-		}
-
-    }
-
-    window.customElements.define(MyView1.is, MyView1);
-  </script>
-</dom-module>
+				          }} -->

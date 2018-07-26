@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="request-imports.html">
 
 <dom-module id="my-view2">
   <template>
@@ -54,48 +55,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div>
-      <!-- <vaadin-grid id="grid" items="[[data]]" size="200" active-item="{{activeItem}}">
-        <vaadin-grid-column width="50px" >
-          <template class="header">#</template>
-          <template>[[index]]</template>
-        </vaadin-grid-column>
-
-        <vaadin-grid-column width="70px">
-          <template class="header">Start Date</template>
-          <template>[[item.name.first]]</template>
-        </vaadin-grid-column>
-
-        <vaadin-grid-column width="70px" >
-          <template class="header">End Date</template>
-          <template>[[item.name.first]]</template>
-        </vaadin-grid-column>
-
-        <vaadin-grid-column width="80px">
-          <template class="header">Manager</template>
-          <template>[[item.name.last]]</template>
-        </vaadin-grid-column>
-
-        <vaadin-grid-column width="50px">
-          <template class="header">Status</template>
-          <template>[[item.name.last]]</template>
-        </vaadin-grid-column>
-
-        <vaadin-grid-column width="calc(50%-350px)" >
-          <template class="header">Desc</template>
-          <template>[[item.name.desc]]</template>
-        </vaadin-grid-column>
-
-      </vaadin-grid> -->
       <div id="grid">
         <px-data-grid
-          table-data="[[data]]"
-          columns='[
-                      {"name":"Employee","path":"name.first","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"first[string]"},
-                      {"name":"Start Date","path":"name.startDate","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"},
-                      {"name":"End Date","path":"name.endDate","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"},
-                      {"name":"Status","path":"name.first","frozen":false,"id":"email[string]"},
-                      {"name":"Total Days","path":"name.first","frozen":false,"id":"email[string]"}, {"name":"Description","path":"name.desc","frozen":false,"id":"email[string]"}
-                  ]'
+          table-data="[[requests]]"
           resizable
           column-reordering-allowed
           selection-mode="single"
@@ -124,48 +86,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return {
           data: {
             type: Array,
-            value: [
-              {"name": {
-                "title": "miss",
-                "first": "donna",
-                "startDate": "18/07/2018",
-                "endDate": "18/07/2018",
-                "last": "davis",
-                "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh"
-              }},
-              {"name": {
-                "title": "mr",
-                "first": "samuel",
-                "startDate": "18/07/2018",
-                "endDate": "18/07/2018",
-                "last": "kelley",
-                "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh"
-              }},
-              {"name": {
-                "title": "ms",
-                "first": "katie",
-                "startDate": "18/07/2018",
-                "endDate": "18/07/2018",
-                "last": "butler",
-                "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh"
-              }},
-              {"name": {
-                "title": "ms",
-                "first": "katie",
-                "startDate": "18/07/2018",
-                "endDate": "18/07/2018",
-                "last": "butler",
-                "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh"
-              }},
-              {"name": {
-                "title": "ms",
-                "first": "katie",
-                "startDate": "18/07/2018",
-                "endDate": "18/07/2018",
-                "last": "butler",
-                "desc": "chchygchgchgchmgchmgchgcnhghchgchgchgchgcmhgcmhgchgchmgchmgchgchgchmgchmgcvjgvhvjhvhjvjhhjvjh"
-              }}
-            ]
+            value: []
+          },
+          requests: {
+            type: Array,
+            value: []
           },
           activeItem: {
             observer: '_activeItemChanged'
@@ -179,11 +104,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       constructor(){
         super();
         this.opened = false;
+        this.data = [
+            {
+                "leaveId": 2,
+                "startDate": "2018-07-27T18:30:00.000+0000",
+                "endDate": "2018-07-28T18:30:00.000+0000",
+                "descr": "xyz",
+                "empId": 1,
+                "fname": "b",
+                "status": "Pending",
+                "numLeaveDays": 2,
+                "leaveLeft": 10
+            },
+            {
+                "leaveId": 3,
+                "startDate": "2018-07-31T18:30:00.000+0000",
+                "endDate": "2018-08-02T18:30:00.000+0000",
+                "descr": "sick",
+                "empId": 1,
+                "fname": "b",
+                "status": "Pending",
+                "numLeaveDays": 3,
+                "leaveLeft": 10
+            },
+            {
+                "leaveId": 1,
+                "startDate": "2018-07-25T18:30:00.000+0000",
+                "endDate": "2018-07-26T18:30:00.000+0000",
+                "descr": "pqr",
+                "empId": 2,
+                "fname": "j",
+                "status": "Accepted",
+                "numLeaveDays": 2,
+                "leaveLeft": 18
+            }
+        ];
+        this.requests = RequestService.getRequestsForTable(this.data);
       }
-       // _activeItemChanged(item) {
-       //    this.$.grid.selectedItems = item ? [item] : [];
-       //    console.log(item);
-       //  }
+       
       _selected(item){
           setTimeout(function () {
             if(item.length>0){

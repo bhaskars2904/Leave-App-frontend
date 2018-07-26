@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-column.html">
 <link rel="import" href="../bower_components/vaadin-grid/src/vaadin-grid-selection-column.html"> -->
 <link rel="import" href="../bower_components/px-data-grid/px-data-grid.html">
+<link rel="import" href="leaveinfo-imports.html">
 
 <dom-module id="my-modal">
 	<template>
@@ -28,15 +29,19 @@
 		    	height: 100px;
 		    	width: 400px;	
 		    }
+		    #leaveLeft{
+		    	padding-top: 20px;
+		    }
 		</style>
 		<div style="display: inline-block">
-			<paper-input id="startDate" label="Start Date" type="date" value="{{startDate}}" error-message="The end date is before the start date"></paper-input>
+			<paper-input id="startDate" label="Start Date" type="date" value="{{startDate}}" error-message="Invalid Start date"></paper-input>
 			<paper-input id="endDate" label="End Date" type="date" value="{{endDate}}"></paper-input>
+			<div id="leaveLeft"><text>Leaves left :<text>[[data.leaveLeft]]</text></text></div>
+			<div id="leaveLeft"><text>Leave Days :<text>[[numLeaveDays]]</text></text></div>
 			<paper-textarea id="leaveDesc" label="Leave Description" value="{{leaveDesc}}"></paper-textarea>
 		    <div id="managerSelect">
 			    <px-data-grid
-					table-data="[[data]]"
-					columns='[{"name":"First Name","path":"first","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"first[string]"},{"name":"LastName","path":"last","renderer":"px-data-grid-string-renderer","editable":true,"frozen":false,"id":"last[string]"}]'
+					table-data="[[leaveinfo]]"
 					selection-mode="multi"
 					hide-action-menu
 					flex-to-size
@@ -51,27 +56,16 @@
 			static get is(){return 'my-modal';}
 			static get properties() {
 			    return {
-			      startDate: Date,
-			      endDate: Date,
-			      data: {
+					startDate: Date,
+					endDate: Date,
+					numLeaveDays: Number,
+					data: {
+		      			type: Object,
+						value: {}
+		      		},
+		      		leaveinfo:{
 		      			type: Array,
-						value: [{
-						    "first": "Elizabeth",
-						    "last": "Wong",
-						    "full": "Elizabeth Wong",
-						    "email": "sika@iknulber.cl",
-						    "born": "1985-04-12",
-						    "age": 32,
-						    "appointment": "2009-05-05 01:10"
-						},{
-						    "first": "Elizabeth",
-						    "last": "Wong",
-						    "full": "Elizabeth Wong",
-						    "email": "sika@iknulber.cl",
-						    "born": "1985-04-12",
-						    "age": 32,
-						    "appointment": "2009-05-05 01:10"
-						}]
+		      			value: []
 		      		},
 		      		submitDisabled:{
 		      			type: Boolean,
@@ -86,6 +80,28 @@
           			}
 			      }
 			    }
+
+		    constructor(){
+		    	super();
+		    	console.log("constructor called");
+		    	this.data = {
+				    "leaveLeft": 10,
+				    "approverList": [
+				        {
+				            "fname": "a",
+				            "lname": "a",
+				            "mail": "3"
+				        },
+				        {
+				            "fname": "s",
+				            "lname": "s",
+				            "mail": "4"
+				        }
+				    ]
+				};
+				this.leaveinfo = LeaveInfoService.getLeaveInfoService(this.data);
+
+		    }
 		    static get observers(){
 		    	return [
 		    		// '_dateChange(startDate, endDate)',
@@ -101,7 +117,7 @@
 
 		    // }
 
-		   
+		    
 
 		    // _dateChange(startDate, endDate){
 		    // 	if (startDate === "") {return};
@@ -116,10 +132,22 @@
 		    // }
 
 		    _toSubmit(startDate, endDate, item){
+		    	console.log("invoked");
 		    	if (startDate === ""){return}
 	    		if (endDate === ""){return}
     			if (item.base.length<0){return}
-		    	if(startDate > endDate){
+				var date1 = new Date(startDate);
+				var date2 = new Date(endDate);
+				var currDate = new Date();
+				var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+				var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+				if(startDate!==undefined && endDate!==undefined){
+					this.numLeaveDays = diffDays+1;
+					console.log(diffDays+1);
+					console.log("is currentdate after start date ");
+					console.log(Math.floor(Math.abs(date1.getTime()-currDate.getTime())/(1000*3600*24)));
+				}
+		    	if(startDate > endDate || date1.getTime()<currDate.getTime()){
 		    		this.$.startDate.invalid = true;
 		    		this.submitDisabled = true ;
 		    	}else{
@@ -128,8 +156,25 @@
 		    			this.$.startDate.invalid = false;	
 		    		}else{
 		    			console.log(item.base);
-			    		this.$.startDate.invalid = false;
-			    		this.submitDisabled = false ;
+			    		// this.$.startDate.invalid = false;
+			    		// this.submitDisabled = false ;
+
+
+
+			    		// if(startDate < formatDate(new Date())){
+			    		// 	this.submitDisabled = true;
+			    		// }else{
+			    		// 	this.submitDisabled = false;
+			    		// }
+
+
+			    		if(this.data.leaveLeft<this.numLeaveDayss){
+			    			this.submitDisabled = true;
+			    		}else{
+
+			    			this.$.startDate.invalid = false;
+			    			this.submitDisabled = false ;
+			    		}
 		    		}
 		    	}
 		    }

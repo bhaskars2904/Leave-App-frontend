@@ -34,17 +34,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <div style="padding-left: 300px; font-size: 30px">EMPLOYEE DETAILS</div>
-      <div class="details"><span>First Name: &nbsp;&nbsp;&nbsp;&nbsp;</span><span>bhaskar</span></div>
-      <div class="details"><span>Last Name: &nbsp;&nbsp;&nbsp;&nbsp;</span><span>sharma</span></div>
-      <div class="details"><span>Employee Id: &nbsp;&nbsp;</span><span>ztpl0132</span></div>
-      <div class="details"><span>E-Mail Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>bhaskar.sharma@zemosolabs.com</span></div>
-      <div class="details"><span>Manager:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>Sudhir</span></div>
+      <div class="details"><span>First Name: &nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{data.fname}}</span></div>
+      <div class="details"><span>Last Name: &nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{data.lname}}</span></div>
+      <div class="details"><span>Employee Id: &nbsp;&nbsp;</span><span>{{data.empId}}</span></div>
+      <div class="details"><span>E-Mail Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{data.mail}}</span></div>
+      <div class="details"><span>Username:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{data.uname}}</span></div>
     </div>
   </template>
 
   <script>
     class MyView3 extends Polymer.Element {
       static get is() { return 'my-view3'; }
+      static get properties(){
+        return {
+          data:{
+            type: Object,
+            value: {
+                "empId": 1,
+                "fname": "b",
+                "lname": "b",
+                "mail": "1",
+                "role": 1,
+                "uname": "b"
+            }
+          } 
+        }
+      }
     }
 
     window.customElements.define(MyView3.is, MyView3);
